@@ -4,9 +4,9 @@ const SERIES = [
   { id: "inicial_jc", corto: "Inicial JC", tipo: "cuota", color: 3 },
   { id: "secundaria", corto: "Secundaria", tipo: "cuota", color: 4 },
   // `cuota`: contra qué cuota se compara el comedor en la vista "Comedor vs. cuota"
-  { id: "comedor_maternal", corto: "Comedor maternal", tipo: "comedor", color: 5, cuota: "inicial_js" },
-  { id: "comedor_infantes", corto: "Comedor jardín", tipo: "comedor", color: 6, defecto: true, cuota: "inicial_js" },
-  { id: "comedor_primer_ciclo", corto: "Comedor 1er ciclo", tipo: "comedor", color: 7, defecto: true, cuota: "primaria" },
+  { id: "comedor_maternal", corto: "Comedor maternal", tipo: "comedor", color: 5, defectoComedor: true, cuota: "inicial_jc" },
+  { id: "comedor_infantes", corto: "Comedor jardín", tipo: "comedor", color: 6, defectoComedor: true, cuota: "inicial_jc" },
+  { id: "comedor_primer_ciclo", corto: "Comedor 1er ciclo", tipo: "comedor", color: 7, defectoComedor: true, cuota: "primaria" },
   { id: "comedor_segundo_ciclo", corto: "Comedor 2do ciclo", tipo: "comedor", color: 8, cuota: "primaria" },
 ];
 const NIVELES_RESERVA = ["inicial_js", "inicial_jc", "primaria", "secundaria"];
@@ -108,7 +108,8 @@ const estado = {
   precio: "lista",
   vista: "pesos",
   activas: new Set(SERIES.filter((s) => s.defecto).map((s) => s.id)),
-  refs: new Set(), // líneas de comparación en la vista en pesos: "ipc", "blue"
+  comedores: new Set(SERIES.filter((s) => s.defectoComedor).map((s) => s.id)), // series de la vista "Comedor vs. cuota"
+  refs: new Set(["ipc"]), // líneas de comparación en la vista en pesos: "ipc", "blue"
   cursor: null,
 };
 const REFS = {
@@ -121,15 +122,17 @@ const leerURL = () => {
     const v = p.get(k);
     if (v && document.querySelector(`input[name=${k}][value="${v}"]`)) estado[k] = v;
   }
-  if (p.get("series")) {
-    const ids = p.get("series").split(",").filter((id) => SERIES.some((s) => s.id === id));
-    if (ids.length) estado.activas = new Set(ids);
+  for (const [param, clave] of [["series", "activas"], ["comedores", "comedores"]]) {
+    if (!p.get(param)) continue;
+    const ids = p.get(param).split(",").filter((id) => SERIES.some((s) => s.id === id && (clave === "activas" || s.tipo === "comedor")));
+    if (ids.length) estado[clave] = new Set(ids);
   }
-  if (p.get("comparar")) estado.refs = new Set(p.get("comparar").split(",").filter((r) => r in REFS));
+  if (p.has("comparar")) estado.refs = new Set(p.get("comparar").split(",").filter((r) => r in REFS));
 };
 const escribirURL = () => {
   const p = new URLSearchParams({ rango: estado.rango, precio: estado.precio, vista: estado.vista, series: [...estado.activas].join(",") });
-  if (estado.refs.size) p.set("comparar", [...estado.refs].join(","));
+  p.set("comedores", [...estado.comedores].join(","));
+  p.set("comparar", [...estado.refs].join(","));
   history.replaceState(null, "", `#${p}`);
 };
 
@@ -141,11 +144,10 @@ function periodo() {
   return { inicio, meses: rangoMeses(inicio, FIN), activas };
 }
 
-// En la vista "Comedor vs. cuota" solo se grafican los comedores elegidos (o los de defecto si no hay ninguno).
+// La vista "Comedor vs. cuota" tiene su propia selección de comedores.
+const seleccionActual = () => (estado.vista === "comedor" ? estado.comedores : estado.activas);
 function seriesDelGrafico(activas) {
-  if (estado.vista !== "comedor") return activas;
-  const comedores = activas.filter((s) => s.tipo === "comedor");
-  return comedores.length ? comedores : SERIES.filter((s) => s.tipo === "comedor" && s.defecto);
+  return estado.vista === "comedor" ? SERIES.filter((s) => estado.comedores.has(s.id)) : activas;
 }
 const cuotaDe = (serie) => SERIES.find((s) => s.id === serie.cuota);
 
@@ -217,12 +219,13 @@ function renderSelectorSeries() {
     if (tipoPrevio && s.tipo !== tipoPrevio) c.append(el("span", { class: "separador" }));
     tipoPrevio = s.tipo;
     const input = el("input", { type: "checkbox", value: s.id });
-    input.checked = estado.activas.has(s.id);
+    input.checked = seleccionActual().has(s.id);
     input.addEventListener("change", () => {
-      if (input.checked) estado.activas.add(s.id);
-      else estado.activas.delete(s.id);
-      if (!estado.activas.size) {
-        estado.activas.add(s.id);
+      const sel = seleccionActual();
+      if (input.checked) sel.add(s.id);
+      else sel.delete(s.id);
+      if (!sel.size) {
+        sel.add(s.id);
         input.checked = true;
       }
       render();
@@ -245,7 +248,7 @@ const AYUDAS = {
   usd: "Valor mensual dividido por el dólar blue promedio de cada mes.",
   comedor: () =>
     `Cuánto representa el comedor sobre la cuota ${estado.precio === "lista" ? "de lista" : "con pronto pago"} del mismo nivel: ` +
-    "comedor maternal y jardín contra la cuota de inicial jornada simple; comedor de primaria contra la cuota de primaria. 100% = el comedor cuesta lo mismo que la cuota.",
+    "comedor maternal y jardín contra la cuota de inicial jornada completa; comedor de primaria contra la cuota de primaria. 100% = el comedor cuesta lo mismo que la cuota.",
 };
 const TITULOS = {
   pesos: "Valor mensual en pesos",
@@ -623,6 +626,7 @@ function renderHistorial() {
 // ---------- orquestación ----------
 function render() {
   escribirURL();
+  renderSelectorSeries();
   renderTiles();
   renderGrafico();
   renderResumen();
@@ -652,7 +656,6 @@ document.querySelectorAll("input[name=ref]").forEach((inp) => {
     render();
   });
 });
-renderSelectorSeries();
 renderHistorial();
 conectarInteraccion();
 render();
