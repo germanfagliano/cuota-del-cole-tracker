@@ -36,7 +36,7 @@
         <label><input type="radio" name="vista" value="pesos" checked><span>Pesos</span></label>
         <label><input type="radio" name="vista" value="real"><span>Pesos de hoy</span></label>
         <label><input type="radio" name="vista" value="usd"><span>Dólar blue</span></label>
-        <label><input type="radio" name="vista" value="indice"><span>Comparado con IPC</span></label>
+        <label><input type="radio" name="vista" value="comedor"><span>Comedor vs. cuota</span></label>
       </fieldset>
     </section>
 
@@ -47,6 +47,11 @@
       </div>
       <fieldset class="series" id="series">
         <legend class="sr-only">Qué mostrar</legend>
+      </fieldset>
+      <fieldset class="referencias" id="referencias">
+        <legend>Comparar con</legend>
+        <label class="serie"><input type="checkbox" name="ref" value="ipc"><span class="marca"></span><span class="clave-ref ipc"></span>Si hubiera seguido al IPC</label>
+        <label class="serie"><input type="checkbox" name="ref" value="blue"><span class="marca"></span><span class="clave-ref blue"></span>Si hubiera seguido al dólar blue</label>
       </fieldset>
       <div class="grafico" id="grafico" tabindex="0" role="img" aria-describedby="ayuda-vista">
         <svg id="svg"></svg>
@@ -93,6 +98,7 @@
         <li><strong>Comedor calculado:</strong> cuando el comunicado solo informó un porcentaje (ago-2024 +6%, dic-2024 +9,5%, jun-2025 +13%), el valor se calcula sobre el anterior. En 2023 solo hubo porcentajes, por eso el comedor empieza en mar-2024.</li>
         <li><strong>IPC:</strong> índice de precios al consumidor nacional del INDEC, vía <a href="https://argentinadatos.com">ArgentinaDatos</a> (respaldo: datos.gob.ar). Los meses que el INDEC todavía no publicó usan el último dato disponible.</li>
         <li><strong>Dólar blue:</strong> promedio mensual del precio de venta (ArgentinaDatos); el valor de hoy viene de <a href="https://dolarapi.com">DolarApi</a>. Se actualiza solo todos los días.</li>
+        <li><strong>Comedor vs. cuota:</strong> comedor maternal y jardín contra la cuota de inicial jornada simple; comedor de primaria contra la cuota de primaria, con el tipo de precio elegido.</li>
         <li><strong>Pesos de hoy:</strong> cada valor se ajusta por la inflación acumulada hasta el último IPC publicado.</li>
         <li>No incluye seguro escolar, talleres ni descuentos por hermano.</li>
       </ul>

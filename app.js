@@ -3,10 +3,11 @@ const SERIES = [
   { id: "inicial_js", corto: "Inicial JS", tipo: "cuota", color: 2, defecto: true },
   { id: "inicial_jc", corto: "Inicial JC", tipo: "cuota", color: 3 },
   { id: "secundaria", corto: "Secundaria", tipo: "cuota", color: 4 },
-  { id: "comedor_maternal", corto: "Comedor maternal", tipo: "comedor", color: 5 },
-  { id: "comedor_infantes", corto: "Comedor jardín", tipo: "comedor", color: 6, defecto: true },
-  { id: "comedor_primer_ciclo", corto: "Comedor 1er ciclo", tipo: "comedor", color: 7, defecto: true },
-  { id: "comedor_segundo_ciclo", corto: "Comedor 2do ciclo", tipo: "comedor", color: 8 },
+  // `cuota`: contra qué cuota se compara el comedor en la vista "Comedor vs. cuota"
+  { id: "comedor_maternal", corto: "Comedor maternal", tipo: "comedor", color: 5, cuota: "inicial_js" },
+  { id: "comedor_infantes", corto: "Comedor jardín", tipo: "comedor", color: 6, defecto: true, cuota: "inicial_js" },
+  { id: "comedor_primer_ciclo", corto: "Comedor 1er ciclo", tipo: "comedor", color: 7, defecto: true, cuota: "primaria" },
+  { id: "comedor_segundo_ciclo", corto: "Comedor 2do ciclo", tipo: "comedor", color: 8, cuota: "primaria" },
 ];
 const NIVELES_RESERVA = ["inicial_js", "inicial_jc", "primaria", "secundaria"];
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
@@ -107,7 +108,12 @@ const estado = {
   precio: "lista",
   vista: "pesos",
   activas: new Set(SERIES.filter((s) => s.defecto).map((s) => s.id)),
+  refs: new Set(), // líneas de comparación en la vista en pesos: "ipc", "blue"
   cursor: null,
+};
+const REFS = {
+  ipc: { clase: "ref-ipc", sufijo: "si siguiera al IPC" },
+  blue: { clase: "ref-blue", sufijo: "si siguiera al blue" },
 };
 const leerURL = () => {
   const p = new URLSearchParams(location.hash.slice(1));
@@ -119,9 +125,11 @@ const leerURL = () => {
     const ids = p.get("series").split(",").filter((id) => SERIES.some((s) => s.id === id));
     if (ids.length) estado.activas = new Set(ids);
   }
+  if (p.get("comparar")) estado.refs = new Set(p.get("comparar").split(",").filter((r) => r in REFS));
 };
 const escribirURL = () => {
   const p = new URLSearchParams({ rango: estado.rango, precio: estado.precio, vista: estado.vista, series: [...estado.activas].join(",") });
+  if (estado.refs.size) p.set("comparar", [...estado.refs].join(","));
   history.replaceState(null, "", `#${p}`);
 };
 
@@ -130,17 +138,18 @@ function periodo() {
   let inicio = estado.rango === "todo" ? PRIMER_MES : estado.rango === "12m" ? sumarMes(FIN, -12) : estado.rango;
   if (inicio < PRIMER_MES) inicio = PRIMER_MES;
   const activas = SERIES.filter((s) => estado.activas.has(s.id));
-  let meses = rangoMeses(inicio, FIN);
-  let base = inicio;
-  if (estado.vista === "indice") {
-    // base 100 = primer mes en el que todas las series elegidas tienen dato
-    base = meses.find((m) => activas.every((s) => valorNominal(s, m, estado.precio) != null)) ?? inicio;
-    meses = rangoMeses(base, FIN);
-  }
-  return { inicio, base, meses, activas };
+  return { inicio, meses: rangoMeses(inicio, FIN), activas };
 }
 
-function transformar(serie, mes, base) {
+// En la vista "Comedor vs. cuota" solo se grafican los comedores elegidos (o los de defecto si no hay ninguno).
+function seriesDelGrafico(activas) {
+  if (estado.vista !== "comedor") return activas;
+  const comedores = activas.filter((s) => s.tipo === "comedor");
+  return comedores.length ? comedores : SERIES.filter((s) => s.tipo === "comedor" && s.defecto);
+}
+const cuotaDe = (serie) => SERIES.find((s) => s.id === serie.cuota);
+
+function transformar(serie, mes) {
   const v = valorNominal(serie, mes, estado.precio);
   if (v == null) return null;
   switch (estado.vista) {
@@ -148,18 +157,31 @@ function transformar(serie, mes, base) {
       return (v * ipcNivel.get(IPC_HASTA)) / ipcNivel.get(mes);
     case "usd":
       return v / blueDe(mes);
-    case "indice": {
-      const b = valorNominal(serie, base, estado.precio);
-      return b ? (v / b) * 100 : null;
+    case "comedor": {
+      const c = valorNominal(cuotaDe(serie), mes, estado.precio);
+      return c ? (v / c) * 100 : null;
     }
     default:
       return v;
   }
 }
+// Cuánto costaría la serie si desde su primer mes en el período hubiera seguido al IPC o al dólar blue.
+function lineasReferencia(serie, meses) {
+  const desde = meses.find((m) => valorNominal(serie, m, estado.precio) != null);
+  if (!desde) return [];
+  const v0 = valorNominal(serie, desde, estado.precio);
+  return [...estado.refs].map((r) => ({
+    r,
+    valores: meses.map((m) =>
+      m < desde ? null : r === "ipc" ? (v0 * ipcNivel.get(m)) / ipcNivel.get(desde) : (v0 / blueDe(desde)) * blueDe(m),
+    ),
+  }));
+}
+
 const formatoVista = (v) =>
-  estado.vista === "usd" ? usd(v) : estado.vista === "indice" ? nf1.format(v) : pesos(v);
+  estado.vista === "usd" ? usd(v) : estado.vista === "comedor" ? `${nf1.format(v)}%` : pesos(v);
 const formatoEje = (v) =>
-  estado.vista === "usd" ? `US$ ${nf0.format(v)}` : estado.vista === "indice" ? nf0.format(v) : pesosCorto(v);
+  estado.vista === "usd" ? `US$ ${nf0.format(v)}` : estado.vista === "comedor" ? `${nf0.format(v)}%` : pesosCorto(v);
 
 // ---------- tiles ----------
 function renderTiles() {
@@ -205,7 +227,7 @@ function renderSelectorSeries() {
       }
       render();
     });
-    c.append(el("label", { class: "serie", style: `--c:${colorDe(s)}`, title: s.nombre }, input, el("span", { class: "marca" }), el("span", { class: "clave" }), s.nombre));
+    c.append(el("label", { class: "serie", "data-tipo": s.tipo, style: `--c:${colorDe(s)}`, title: s.nombre }, input, el("span", { class: "marca" }), el("span", { class: "clave" }), s.nombre));
   }
 }
 
@@ -221,35 +243,52 @@ const AYUDAS = {
   pesos: "Valor mensual en pesos, tal como lo cobra el colegio.",
   real: () => `Valores ajustados por inflación a pesos de ${nombreMes(IPC_HASTA)}. Si la línea sube, aumentó más que el IPC.`,
   usd: "Valor mensual dividido por el dólar blue promedio de cada mes.",
-  indice: (base) => `Base 100 = ${nombreMes(base)}. La línea punteada es el IPC: lo que está por encima aumentó más que la inflación.`,
+  comedor: () =>
+    `Cuánto representa el comedor sobre la cuota ${estado.precio === "lista" ? "de lista" : "con pronto pago"} del mismo nivel: ` +
+    "comedor maternal y jardín contra la cuota de inicial jornada simple; comedor de primaria contra la cuota de primaria. 100% = el comedor cuesta lo mismo que la cuota.",
 };
-const TITULOS = { pesos: "Valor mensual en pesos", real: "Valor mensual en pesos de hoy", usd: "Valor mensual en dólares blue", indice: "Aumento acumulado vs. inflación" };
+const TITULOS = {
+  pesos: "Valor mensual en pesos",
+  real: "Valor mensual en pesos de hoy",
+  usd: "Valor mensual en dólares blue",
+  comedor: "Peso del comedor sobre la cuota",
+};
 
 let geom = null;
 
 function renderGrafico() {
-  const { base, meses, activas } = periodo();
+  const { meses, activas } = periodo();
+  $("#series").classList.toggle("solo-comedor", estado.vista === "comedor");
   $("#titulo-grafico").textContent = TITULOS[estado.vista];
   const ayuda = AYUDAS[estado.vista];
-  $("#ayuda-vista").textContent = typeof ayuda === "function" ? ayuda(base) : ayuda;
+  const conRefs = estado.vista === "pesos" && estado.refs.size > 0;
+  $("#referencias").hidden = estado.vista !== "pesos";
+  let textoAyuda = typeof ayuda === "function" ? ayuda() : ayuda;
+  if (conRefs) {
+    const partes = [];
+    if (estado.refs.has("ipc")) partes.push("la raya larga muestra cuánto costaría si hubiera aumentado igual que el IPC");
+    if (estado.refs.has("blue")) partes.push("la línea de puntos, si hubiera mantenido su valor en dólares blue");
+    textoAyuda += ` Desde ${nombreMes(meses[0])} (o el primer mes con dato), ${partes.join("; ")}.`;
+  }
+  $("#ayuda-vista").textContent = textoAyuda;
 
-  const series = activas.map((s) => ({ s, valores: meses.map((m) => transformar(s, m, base)) }));
-  const referencia =
-    estado.vista === "indice"
-      ? { nombre: "IPC (inflación)", corto: "IPC", valores: meses.map((m) => (ipcNivel.get(m) / ipcNivel.get(base)) * 100) }
-      : null;
+  const series = seriesDelGrafico(activas).map((s) => ({
+    s,
+    valores: meses.map((m) => transformar(s, m)),
+    refs: conRefs ? lineasReferencia(s, meses) : [],
+  }));
 
   const svg = $("#svg");
   svg.replaceChildren();
   const W = svg.clientWidth || 800;
   const H = svg.clientHeight || 420;
   const angosto = W < 640;
-  const conEtiquetas = !angosto && series.length + (referencia ? 1 : 0) <= 5;
+  const conEtiquetas = !angosto && series.length <= 5;
   const M = { l: 70, r: conEtiquetas ? 170 : 14, t: 14, b: 30 };
   const iw = W - M.l - M.r;
   const ih = H - M.t - M.b;
 
-  const todos = [...series.flatMap((x) => x.valores), ...(referencia ? referencia.valores : [])].filter((v) => v != null);
+  const todos = series.flatMap((x) => [...x.valores, ...x.refs.flatMap((r) => r.valores)]).filter((v) => v != null);
   const { paso, tope } = escalaLinda(Math.max(...todos) * 1.04);
   const x = (i) => M.l + (meses.length === 1 ? 0 : (i / (meses.length - 1)) * iw);
   const y = (v) => M.t + ih - (v / tope) * ih;
@@ -307,8 +346,10 @@ function renderGrafico() {
     });
     return d;
   };
-  if (referencia) {
-    svg.append(sv("path", { class: "linea referencia", d: camino(referencia.valores), style: "stroke:var(--referencia)" }));
+  for (const { s, refs } of series) {
+    for (const { r, valores } of refs) {
+      svg.append(sv("path", { class: `linea ${REFS[r].clase}`, d: camino(valores), style: `stroke:${colorDe(s)}` }));
+    }
   }
   for (const { s, valores } of series) {
     svg.append(sv("path", { class: "linea", d: camino(valores), style: `stroke:${colorDe(s)}` }));
@@ -318,7 +359,6 @@ function renderGrafico() {
   if (conEtiquetas) {
     const items = [
       ...series.map(({ s, valores }) => ({ texto: s.corto, v: valores.at(-1), color: colorDe(s) })),
-      ...(referencia ? [{ texto: referencia.corto, v: referencia.valores.at(-1), color: "var(--referencia)" }] : []),
     ].filter((it) => it.v != null);
     items.forEach((it) => (it.y = y(it.v)));
     items.sort((a, b) => a.y - b.y);
@@ -341,7 +381,7 @@ function renderGrafico() {
 
   const gCursor = sv("g", { "pointer-events": "none" });
   svg.append(gCursor);
-  geom = { meses, series, referencia, x, y, M, iw, ih, W, gCursor, base };
+  geom = { meses, series, x, y, M, iw, ih, W, gCursor };
   if (estado.cursor != null && estado.cursor >= meses.length) estado.cursor = null;
   dibujarCursor();
 }
@@ -349,7 +389,7 @@ function renderGrafico() {
 function dibujarCursor() {
   const tip = $("#tooltip");
   if (!geom) return;
-  const { meses, series, referencia, x, y, M, ih, W, gCursor, base } = geom;
+  const { meses, series, x, y, M, ih, W, gCursor } = geom;
   gCursor.replaceChildren();
   const i = estado.cursor;
   if (i == null) {
@@ -359,17 +399,33 @@ function dibujarCursor() {
   const cx = x(i);
   gCursor.append(sv("line", { class: "cruz", x1: cx, x2: cx, y1: M.t, y2: M.t + ih }));
 
-  const filas = [
-    ...series.map(({ s, valores }) => ({ nombre: s.nombre, v: valores[i], color: colorDe(s) })),
-    ...(referencia ? [{ nombre: referencia.nombre, v: referencia.valores[i], color: "var(--referencia)", ref: true }] : []),
-  ].filter((f) => f.v != null);
-  for (const f of filas) gCursor.append(sv("circle", { class: "punto", cx, cy: y(f.v), r: 4.5, style: `fill:${f.color}` }));
+  // cada serie con sus líneas de comparación debajo; grupos ordenados de mayor a menor
+  const grupos = series
+    .filter(({ valores }) => valores[i] != null)
+    .map(({ s, valores, refs }) => ({
+      v: valores[i],
+      filas: [
+        { nombre: s.nombre, v: valores[i], color: colorDe(s), clase: "" },
+        ...refs
+          .filter((r) => r.valores[i] != null)
+          .map((r) => ({ nombre: `${s.corto} ${REFS[r.r].sufijo}`, v: r.valores[i], color: colorDe(s), clase: REFS[r.r].clase, sub: true })),
+      ],
+    }));
+  grupos.sort((a, b) => b.v - a.v);
+  for (const g of grupos) {
+    const f = g.filas[0];
+    gCursor.append(sv("circle", { class: "punto", cx, cy: y(f.v), r: 4.5, style: `fill:${f.color}` }));
+  }
 
   const mes = meses[i];
   tip.replaceChildren(el("div", { class: "mes" }, nombreMes(mes)));
-  filas.sort((a, b) => b.v - a.v);
-  for (const f of filas) {
-    tip.append(el("div", { class: "fila", style: `--c:${f.color}` }, el("i", { class: f.ref ? "ref" : "" }), el("b", {}, formatoVista(f.v)), el("span", {}, f.nombre)));
+  for (const f of grupos.flatMap((g) => g.filas)) {
+    let texto = f.nombre;
+    if (f.sub) {
+      const principal = grupos.find((g) => g.filas.includes(f)).v;
+      texto += ` · la real ${pct(principal / f.v - 1)}`;
+    }
+    tip.append(el("div", { class: `fila${f.sub ? " sub" : ""}`, style: `--c:${f.color}` }, el("i", { class: f.clase }), el("b", {}, formatoVista(f.v)), el("span", {}, texto)));
   }
   // aumentos que entraron en vigencia este mes
   const cambios = [];
@@ -379,8 +435,13 @@ function dibujarCursor() {
     if (ahora && antes && ahora !== antes) cambios.push(`${s.corto} ${pct(ahora / antes - 1)}`);
   }
   if (cambios.length) tip.append(el("div", { class: "cambio" }, `Aumento este mes: ${cambios.join(" · ")}`));
-  if (estado.vista === "indice" && ipcVar.has(mes) && mes !== base) tip.append(el("div", { class: "cambio" }, `IPC del mes: ${nf1.format(ipcVar.get(mes))}%`));
-  if (mes > IPC_HASTA && (estado.vista === "indice" || estado.vista === "real")) tip.append(el("div", { class: "cambio" }, "IPC de este mes todavía no publicado"));
+  if (estado.vista === "comedor") {
+    const detalle = series
+      .filter(({ valores }) => valores[i] != null)
+      .map(({ s }) => `${s.corto} ${pesos(valorNominal(s, mes, estado.precio))} / cuota ${cuotaDe(s).corto} ${pesos(valorNominal(cuotaDe(s), mes, estado.precio))}`);
+    for (const d of detalle) tip.append(el("div", { class: "cambio" }, d));
+  }
+  if (mes > IPC_HASTA && (estado.vista === "real" || (estado.vista === "pesos" && estado.refs.has("ipc")))) tip.append(el("div", { class: "cambio" }, "IPC de este mes todavía no publicado"));
 
   tip.hidden = false;
   const tw = tip.offsetWidth;
@@ -583,6 +644,14 @@ for (const k of ["rango", "precio", "vista"]) {
     });
   });
 }
+document.querySelectorAll("input[name=ref]").forEach((inp) => {
+  inp.checked = estado.refs.has(inp.value);
+  inp.addEventListener("change", () => {
+    if (inp.checked) estado.refs.add(inp.value);
+    else estado.refs.delete(inp.value);
+    render();
+  });
+});
 renderSelectorSeries();
 renderHistorial();
 conectarInteraccion();

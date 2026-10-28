@@ -111,6 +111,12 @@ details[open] summary { margin-bottom: 12px; }
 .serie:has(input:checked) .marca { background: var(--text-primary); border-color: var(--text-primary); color: var(--surface-1); }
 .serie:has(input:checked) .marca::after { content: "✓"; font-weight: 800; }
 .separador { width: 100%; height: 0; }
+.referencias { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin: 4px 0 10px; }
+.referencias[hidden] { display: none; }
+.referencias legend { float: left; margin: 0 4px 0 0; }
+.referencias .serie { --c: var(--text-secondary); }
+.clave-ref { width: 18px; height: 0; border-top: 2px dashed var(--text-secondary); }
+.clave-ref.blue { border-top: 2.5px dotted var(--text-secondary); }
 
 /* Gráfico */
 .grafico { position: relative; outline: none; }
@@ -121,6 +127,8 @@ details[open] summary { margin-bottom: 12px; }
 .grafico .base { stroke: var(--axis); }
 .grafico .linea { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .grafico .referencia { stroke: var(--referencia); stroke-dasharray: 5 4; }
+.grafico .ref-ipc { stroke-dasharray: 7 5; stroke-linecap: butt; opacity: .85; }
+.grafico .ref-blue { stroke-dasharray: 0.5 5; stroke-width: 2.5; opacity: .85; }
 .grafico .etiqueta-fin { font-size: 12px; fill: var(--text-secondary); }
 .grafico .etiqueta-fin tspan.v { fill: var(--text-primary); font-weight: 600; }
 .grafico .cruz { stroke: var(--text-muted); stroke-width: 1; }
@@ -133,7 +141,10 @@ details[open] summary { margin-bottom: 12px; }
 .tooltip .mes { color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
 .tooltip .fila { display: grid; grid-template-columns: 14px auto 1fr; gap: 8px; align-items: center; padding: 1px 0; }
 .tooltip .fila i { height: 2px; border-radius: 2px; background: var(--c); }
-.tooltip .fila i.ref { background: none; border-top: 2px dashed var(--c); height: 0; }
+.tooltip .fila i.ref, .tooltip .fila i.ref-ipc { background: none; border-top: 2px dashed var(--c); height: 0; }
+.tooltip .fila i.ref-blue { background: none; border-top: 2.5px dotted var(--c); height: 0; }
+.tooltip .fila.sub span { padding-left: 2px; }
+.tooltip .fila.sub b { font-weight: 500; color: var(--text-secondary); }
 .tooltip .fila b { font-variant-numeric: tabular-nums; }
 .tooltip .fila span { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tooltip .cambio { color: var(--text-muted); font-size: 11.5px; margin-top: 6px; }
@@ -165,3 +176,4 @@ td .clave { display: inline-block; width: 14px; height: 3px; border-radius: 2px;
   .grafico svg { height: 340px; }
   .tarjeta { padding: 14px; }
 }
+.solo-comedor .serie[data-tipo="cuota"], .solo-comedor .separador { display: none; }
