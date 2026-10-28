@@ -1,0 +1,116 @@
+{
+ "categorias": [
+  {
+   "id": "comedor_maternal",
+   "nombre": "Comedor · maternal"
+  },
+  {
+   "id": "comedor_infantes",
+   "nombre": "Comedor · jardín de infantes"
+  },
+  {
+   "id": "comedor_primer_ciclo",
+   "nombre": "Comedor · 1° a 3° (desde 2026, 1° a 4°)"
+  },
+  {
+   "id": "comedor_segundo_ciclo",
+   "nombre": "Comedor · 4° a 6° y secundaria (desde 2026, 5° y 6°)"
+  }
+ ],
+ "vigencias": [
+  {
+   "desde": "2024-03",
+   "fuente": "Comunicado marzo 2024",
+   "valores": {
+    "comedor_maternal": 109350,
+    "comedor_infantes": 109350,
+    "comedor_primer_ciclo": 126200,
+    "comedor_segundo_ciclo": 129500
+   }
+  },
+  {
+   "desde": "2024-08",
+   "fuente": "Comunicado 12/07/2024 (+6%)",
+   "valores": {
+    "comedor_maternal": 115911,
+    "comedor_infantes": 115911,
+    "comedor_primer_ciclo": 133772,
+    "comedor_segundo_ciclo": 137270
+   },
+   "calculado": true
+  },
+  {
+   "desde": "2024-12",
+   "fuente": "Comunicado 31/10/2024 (+9,5%)",
+   "valores": {
+    "comedor_maternal": 126923,
+    "comedor_infantes": 126923,
+    "comedor_primer_ciclo": 146480,
+    "comedor_segundo_ciclo": 150311
+   },
+   "calculado": true
+  },
+  {
+   "desde": "2025-03",
+   "fuente": "Comunicado marzo 2025",
+   "valores": {
+    "comedor_maternal": 163730,
+    "comedor_infantes": 176832,
+    "comedor_primer_ciclo": 204090,
+    "comedor_segundo_ciclo": 215254
+   }
+  },
+  {
+   "desde": "2025-06",
+   "fuente": "Comunicado 19/05/2025 (+13%)",
+   "valores": {
+    "comedor_maternal": 185015,
+    "comedor_infantes": 199820,
+    "comedor_primer_ciclo": 230622,
+    "comedor_segundo_ciclo": 243237
+   },
+   "calculado": true
+  },
+  {
+   "desde": "2025-09",
+   "fuente": "Comunicado 14/08/2025",
+   "valores": {
+    "comedor_maternal": 201700,
+    "comedor_infantes": 217810,
+    "comedor_primer_ciclo": 251400,
+    "comedor_segundo_ciclo": 265150
+   }
+  },
+  {
+   "desde": "2025-12",
+   "fuente": "Comunicado 18/11/2025",
+   "valores": {
+    "comedor_maternal": 221500,
+    "comedor_infantes": 239200,
+    "comedor_primer_ciclo": 276100,
+    "comedor_segundo_ciclo": 291200
+   }
+  },
+  {
+   "desde": "2026-03",
+   "fuente": "Comunicado 18/02/2026",
+   "valores": {
+    "comedor_maternal": 307000,
+    "comedor_infantes": 307000,
+    "comedor_primer_ciclo": 359000,
+    "comedor_segundo_ciclo": 374000
+   },
+   "nota": "Desde 2026 el colegio unifica Maternal y Jardín como «Inicial», y el primer tramo de primaria pasa a ser 1° a 4° (antes 1° a 3°)."
+  },
+  {
+   "desde": "2026-06",
+   "fuente": "Comunicado 06/05/2026",
+   "valores": {
+    "comedor_maternal": 329000,
+    "comedor_infantes": 329000,
+    "comedor_primer_ciclo": 385000,
+    "comedor_segundo_ciclo": 401000
+   }
+  }
+ ]
+}

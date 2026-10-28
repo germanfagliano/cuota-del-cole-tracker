@@ -1,0 +1,422 @@
+{
+ "actualizado": "2026-10-28T13:02:58.345Z",
+ "ipc": [
+  {
+   "mes": "2023-01",
+   "variacion": 6
+  },
+  {
+   "mes": "2023-02",
+   "variacion": 6.6
+  },
+  {
+   "mes": "2023-03",
+   "variacion": 7.7
+  },
+  {
+   "mes": "2023-04",
+   "variacion": 8.4
+  },
+  {
+   "mes": "2023-05",
+   "variacion": 7.8
+  },
+  {
+   "mes": "2023-06",
+   "variacion": 6
+  },
+  {
+   "mes": "2023-07",
+   "variacion": 6.3
+  },
+  {
+   "mes": "2023-08",
+   "variacion": 12.4
+  },
+  {
+   "mes": "2023-09",
+   "variacion": 12.7
+  },
+  {
+   "mes": "2023-10",
+   "variacion": 8.3
+  },
+  {
+   "mes": "2023-11",
+   "variacion": 12.8
+  },
+  {
+   "mes": "2023-12",
+   "variacion": 25.5
+  },
+  {
+   "mes": "2024-01",
+   "variacion": 20.6
+  },
+  {
+   "mes": "2024-02",
+   "variacion": 13.2
+  },
+  {
+   "mes": "2024-03",
+   "variacion": 11
+  },
+  {
+   "mes": "2024-04",
+   "variacion": 8.8
+  },
+  {
+   "mes": "2024-05",
+   "variacion": 4.2
+  },
+  {
+   "mes": "2024-06",
+   "variacion": 4.6
+  },
+  {
+   "mes": "2024-07",
+   "variacion": 4
+  },
+  {
+   "mes": "2024-08",
+   "variacion": 4.2
+  },
+  {
+   "mes": "2024-09",
+   "variacion": 3.5
+  },
+  {
+   "mes": "2024-10",
+   "variacion": 2.7
+  },
+  {
+   "mes": "2024-11",
+   "variacion": 2.4
+  },
+  {
+   "mes": "2024-12",
+   "variacion": 2.7
+  },
+  {
+   "mes": "2025-01",
+   "variacion": 2.2
+  },
+  {
+   "mes": "2025-02",
+   "variacion": 2.4
+  },
+  {
+   "mes": "2025-03",
+   "variacion": 3.7
+  },
+  {
+   "mes": "2025-04",
+   "variacion": 2.8
+  },
+  {
+   "mes": "2025-05",
+   "variacion": 1.5
+  },
+  {
+   "mes": "2025-06",
+   "variacion": 1.6
+  },
+  {
+   "mes": "2025-07",
+   "variacion": 1.9
+  },
+  {
+   "mes": "2025-08",
+   "variacion": 1.9
+  },
+  {
+   "mes": "2025-09",
+   "variacion": 2.1
+  },
+  {
+   "mes": "2025-10",
+   "variacion": 2.3
+  },
+  {
+   "mes": "2025-11",
+   "variacion": 2.5
+  },
+  {
+   "mes": "2025-12",
+   "variacion": 2.8
+  },
+  {
+   "mes": "2026-01",
+   "variacion": 2.9
+  },
+  {
+   "mes": "2026-02",
+   "variacion": 2.9
+  },
+  {
+   "mes": "2026-03",
+   "variacion": 3.4
+  },
+  {
+   "mes": "2026-04",
+   "variacion": 2.6
+  },
+  {
+   "mes": "2026-05",
+   "variacion": 2.1
+  },
+  {
+   "mes": "2026-06",
+   "variacion": 1.9
+  },
+  {
+   "mes": "2026-07",
+   "variacion": 2.1
+  },
+  {
+   "mes": "2026-08",
+   "variacion": 1.7
+  },
+  {
+   "mes": "2026-09",
+   "variacion": 1.9
+  }
+ ],
+ "blue": [
+  {
+   "mes": "2023-01",
+   "promedio_venta": 369,
+   "cierre_venta": 381
+  },
+  {
+   "mes": "2023-02",
+   "promedio_venta": 378,
+   "cierre_venta": 375
+  },
+  {
+   "mes": "2023-03",
+   "promedio_venta": 382,
+   "cierre_venta": 395
+  },
+  {
+   "mes": "2023-04",
+   "promedio_venta": 421,
+   "cierre_venta": 469
+  },
+  {
+   "mes": "2023-05",
+   "promedio_venta": 481,
+   "cierre_venta": 490
+  },
+  {
+   "mes": "2023-06",
+   "promedio_venta": 490,
+   "cierre_venta": 494
+  },
+  {
+   "mes": "2023-07",
+   "promedio_venta": 519,
+   "cierre_venta": 550
+  },
+  {
+   "mes": "2023-08",
+   "promedio_venta": 671,
+   "cierre_venta": 735
+  },
+  {
+   "mes": "2023-09",
+   "promedio_venta": 739,
+   "cierre_venta": 800
+  },
+  {
+   "mes": "2023-10",
+   "promedio_venta": 974,
+   "cierre_venta": 920
+  },
+  {
+   "mes": "2023-11",
+   "promedio_venta": 956,
+   "cierre_venta": 905
+  },
+  {
+   "mes": "2023-12",
+   "promedio_venta": 989,
+   "cierre_venta": 1025
+  },
+  {
+   "mes": "2024-01",
+   "promedio_venta": 1150,
+   "cierre_venta": 1195
+  },
+  {
+   "mes": "2024-02",
+   "promedio_venta": 1118,
+   "cierre_venta": 1030
+  },
+  {
+   "mes": "2024-03",
+   "promedio_venta": 1018,
+   "cierre_venta": 1010
+  },
+  {
+   "mes": "2024-04",
+   "promedio_venta": 1018,
+   "cierre_venta": 1040
+  },
+  {
+   "mes": "2024-05",
+   "promedio_venta": 1125,
+   "cierre_venta": 1225
+  },
+  {
+   "mes": "2024-06",
+   "promedio_venta": 1293,
+   "cierre_venta": 1365
+  },
+  {
+   "mes": "2024-07",
+   "promedio_venta": 1437,
+   "cierre_venta": 1370
+  },
+  {
+   "mes": "2024-08",
+   "promedio_venta": 1355,
+   "cierre_venta": 1305
+  },
+  {
+   "mes": "2024-09",
+   "promedio_venta": 1263,
+   "cierre_venta": 1235
+  },
+  {
+   "mes": "2024-10",
+   "promedio_venta": 1207,
+   "cierre_venta": 1190
+  },
+  {
+   "mes": "2024-11",
+   "promedio_venta": 1140,
+   "cierre_venta": 1120
+  },
+  {
+   "mes": "2024-12",
+   "promedio_venta": 1138,
+   "cierre_venta": 1230
+  },
+  {
+   "mes": "2025-01",
+   "promedio_venta": 1226,
+   "cierre_venta": 1220
+  },
+  {
+   "mes": "2025-02",
+   "promedio_venta": 1222,
+   "cierre_venta": 1230
+  },
+  {
+   "mes": "2025-03",
+   "promedio_venta": 1257,
+   "cierre_venta": 1325
+  },
+  {
+   "mes": "2025-04",
+   "promedio_venta": 1274,
+   "cierre_venta": 1185
+  },
+  {
+   "mes": "2025-05",
+   "promedio_venta": 1173,
+   "cierre_venta": 1180
+  },
+  {
+   "mes": "2025-06",
+   "promedio_venta": 1192,
+   "cierre_venta": 1215
+  },
+  {
+   "mes": "2025-07",
+   "promedio_venta": 1293,
+   "cierre_venta": 1335
+  },
+  {
+   "mes": "2025-08",
+   "promedio_venta": 1333,
+   "cierre_venta": 1320
+  },
+  {
+   "mes": "2025-09",
+   "promedio_venta": 1426,
+   "cierre_venta": 1445
+  },
+  {
+   "mes": "2025-10",
+   "promedio_venta": 1474,
+   "cierre_venta": 1445
+  },
+  {
+   "mes": "2025-11",
+   "promedio_venta": 1434,
+   "cierre_venta": 1435
+  },
+  {
+   "mes": "2025-12",
+   "promedio_venta": 1478,
+   "cierre_venta": 1530
+  },
+  {
+   "mes": "2026-01",
+   "promedio_venta": 1502,
+   "cierre_venta": 1470
+  },
+  {
+   "mes": "2026-02",
+   "promedio_venta": 1438,
+   "cierre_venta": 1425
+  },
+  {
+   "mes": "2026-03",
+   "promedio_venta": 1420,
+   "cierre_venta": 1410
+  },
+  {
+   "mes": "2026-04",
+   "promedio_venta": 1408,
+   "cierre_venta": 1400
+  },
+  {
+   "mes": "2026-05",
+   "promedio_venta": 1417,
+   "cierre_venta": 1430
+  },
+  {
+   "mes": "2026-06",
+   "promedio_venta": 1473,
+   "cierre_venta": 1515
+  },
+  {
+   "mes": "2026-07",
+   "promedio_venta": 1532,
+   "cierre_venta": 1560
+  },
+  {
+   "mes": "2026-08",
+   "promedio_venta": 1548,
+   "cierre_venta": 1555
+  },
+  {
+   "mes": "2026-09",
+   "promedio_venta": 1551,
+   "cierre_venta": 1560
+  },
+  {
+   "mes": "2026-10",
+   "promedio_venta": 1556,
+   "cierre_venta": 1575
+  }
+ ],
+ "blue_hoy": {
+  "fecha": "2026-10-28T12:59:00.000Z",
+  "compra": 1555,
+  "venta": 1575
+ }
+}

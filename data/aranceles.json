@@ -1,0 +1,327 @@
+{
+ "niveles": [
+  {
+   "id": "primaria",
+   "nombre": "Primaria (1° a 6°)"
+  },
+  {
+   "id": "inicial_js",
+   "nombre": "Inicial · jornada simple"
+  },
+  {
+   "id": "inicial_jc",
+   "nombre": "Inicial · jornada completa"
+  },
+  {
+   "id": "secundaria",
+   "nombre": "Secundaria (1° a 6°)"
+  }
+ ],
+ "vigencias": [
+  {
+   "desde": "2023-09",
+   "fuente": "Comunicado 16/08/2023",
+   "lista": {
+    "inicial_js": 68471,
+    "inicial_jc": 95804,
+    "primaria": 106423,
+    "secundaria": 124413
+   },
+   "pronto_pago": {
+    "inicial_js": 61623,
+    "inicial_jc": 86224,
+    "primaria": 95781,
+    "secundaria": 111973
+   }
+  },
+  {
+   "desde": "2023-10",
+   "fuente": "Comunicado 16/08/2023",
+   "lista": {
+    "inicial_js": 76003,
+    "inicial_jc": 106342,
+    "primaria": 118130,
+    "secundaria": 138100
+   },
+   "pronto_pago": {
+    "inicial_js": 68402,
+    "inicial_jc": 95708,
+    "primaria": 106317,
+    "secundaria": 124290
+   }
+  },
+  {
+   "desde": "2023-11",
+   "fuente": "Comunicado 10/10/2023",
+   "lista": {
+    "inicial_js": 84365,
+    "inicial_jc": 118040,
+    "primaria": 131125,
+    "secundaria": 153290
+   },
+   "pronto_pago": {
+    "inicial_js": 75925,
+    "inicial_jc": 106235,
+    "primaria": 118015,
+    "secundaria": 137960
+   }
+  },
+  {
+   "desde": "2024-01",
+   "fuente": "Comunicado 10/10/2023",
+   "lista": {
+    "inicial_js": 116290,
+    "inicial_jc": 161755,
+    "primaria": 183020,
+    "secundaria": 212945
+   },
+   "pronto_pago": {
+    "inicial_js": 104660,
+    "inicial_jc": 145580,
+    "primaria": 164720,
+    "secundaria": 191650
+   }
+  },
+  {
+   "desde": "2024-03",
+   "fuente": "Comunicado 10/10/2023",
+   "lista": {
+    "inicial_js": 127680,
+    "inicial_jc": 177690,
+    "primaria": 200720,
+    "secundaria": 233640
+   },
+   "pronto_pago": {
+    "inicial_js": 114910,
+    "inicial_jc": 159920,
+    "primaria": 180650,
+    "secundaria": 210275
+   }
+  },
+  {
+   "desde": "2024-04",
+   "fuente": "Comunicado abril 2024",
+   "lista": {
+    "inicial_js": 162154,
+    "inicial_jc": 225666,
+    "primaria": 254914,
+    "secundaria": 296723
+   },
+   "pronto_pago": {
+    "inicial_js": 145936,
+    "inicial_jc": 203098,
+    "primaria": 229425,
+    "secundaria": 267050
+   }
+  },
+  {
+   "desde": "2024-05",
+   "fuente": "Comunicado abril 2024",
+   "lista": {
+    "inicial_js": 179990,
+    "inicial_jc": 250489,
+    "primaria": 282954,
+    "secundaria": 329362
+   },
+   "pronto_pago": {
+    "inicial_js": 161990,
+    "inicial_jc": 225440,
+    "primaria": 254658,
+    "secundaria": 296426
+   }
+  },
+  {
+   "desde": "2024-06",
+   "fuente": "Comunicado junio 2024",
+   "lista": {
+    "inicial_js": 191690,
+    "inicial_jc": 266770,
+    "primaria": 301350,
+    "secundaria": 350770
+   },
+   "pronto_pago": {
+    "inicial_js": 172520,
+    "inicial_jc": 240095,
+    "primaria": 271215,
+    "secundaria": 315695
+   }
+  },
+  {
+   "desde": "2024-09",
+   "fuente": "Comunicado septiembre 2024",
+   "lista": {
+    "inicial_js": 212775,
+    "inicial_jc": 296115,
+    "primaria": 334500,
+    "secundaria": 389355
+   },
+   "pronto_pago": {
+    "inicial_js": 191495,
+    "inicial_jc": 266505,
+    "primaria": 301050,
+    "secundaria": 350420
+   }
+  },
+  {
+   "desde": "2024-11",
+   "fuente": "Comunicado 30/09/2024",
+   "lista": {
+    "inicial_js": 224690,
+    "inicial_jc": 312697,
+    "primaria": 353232,
+    "secundaria": 411160
+   },
+   "pronto_pago": {
+    "inicial_js": 202220,
+    "inicial_jc": 281428,
+    "primaria": 317909,
+    "secundaria": 370043
+   }
+  },
+  {
+   "desde": "2025-01",
+   "fuente": "Comunicado 30/09/2024",
+   "lista": {
+    "inicial_js": 272998,
+    "inicial_jc": 379927,
+    "primaria": 429177,
+    "secundaria": 499560
+   },
+   "pronto_pago": {
+    "inicial_js": 245698,
+    "inicial_jc": 341934,
+    "primaria": 386259,
+    "secundaria": 449603
+   }
+  },
+  {
+   "desde": "2025-03",
+   "fuente": "Comunicado 30/09/2024",
+   "lista": {
+    "inicial_js": 302266,
+    "inicial_jc": 419353,
+    "primaria": 473283,
+    "secundaria": 550351
+   },
+   "pronto_pago": {
+    "inicial_js": 272040,
+    "inicial_jc": 377418,
+    "primaria": 425954,
+    "secundaria": 495316
+   }
+  },
+  {
+   "desde": "2025-04",
+   "fuente": "Comunicado 17/03/2025",
+   "lista": {
+    "inicial_js": 329470,
+    "inicial_jc": 457095,
+    "primaria": 515878,
+    "secundaria": 599883
+   },
+   "pronto_pago": {
+    "inicial_js": 296523,
+    "inicial_jc": 411385,
+    "primaria": 464290,
+    "secundaria": 539895
+   }
+  },
+  {
+   "desde": "2025-07",
+   "fuente": "Comunicado 02/06/2025",
+   "lista": {
+    "inicial_js": 363209,
+    "inicial_jc": 503902,
+    "primaria": 568705,
+    "secundaria": 661312
+   },
+   "pronto_pago": {
+    "inicial_js": 326888,
+    "inicial_jc": 453512,
+    "primaria": 511835,
+    "secundaria": 595181
+   },
+   "nota": "Además, en julio 2025 se facturó la diferencia retroactiva de mayo y junio (Primaria $61.906, Inicial JS $39.538, Inicial JC $54.852, Secundaria $71.986 de lista)."
+  },
+  {
+   "desde": "2025-10",
+   "fuente": "Comunicado 16/09/2025",
+   "lista": {
+    "inicial_js": 386850,
+    "inicial_jc": 536700,
+    "primaria": 605700,
+    "secundaria": 704300
+   },
+   "pronto_pago": {
+    "inicial_js": 348165,
+    "inicial_jc": 483030,
+    "primaria": 545130,
+    "secundaria": 633870
+   }
+  },
+  {
+   "desde": "2026-01",
+   "fuente": "Comunicado 10/11/2025",
+   "lista": {
+    "inicial_js": 445500,
+    "inicial_jc": 617500,
+    "primaria": 697000,
+    "secundaria": 810500
+   },
+   "pronto_pago": {
+    "inicial_js": 414315,
+    "inicial_jc": 574275,
+    "primaria": 648210,
+    "secundaria": 753765
+   }
+  },
+  {
+   "desde": "2026-03",
+   "fuente": "Comunicado 10/11/2025",
+   "lista": {
+    "inicial_js": 477000,
+    "inicial_jc": 661500,
+    "primaria": 746500,
+    "secundaria": 868000
+   },
+   "pronto_pago": {
+    "inicial_js": 443610,
+    "inicial_jc": 615195,
+    "primaria": 694245,
+    "secundaria": 807240
+   }
+  },
+  {
+   "desde": "2026-06",
+   "fuente": "Comunicado 06/05/2026",
+   "lista": {
+    "inicial_js": 523500,
+    "inicial_jc": 726000,
+    "primaria": 819500,
+    "secundaria": 953000
+   },
+   "pronto_pago": {
+    "inicial_js": 486855,
+    "inicial_jc": 675180,
+    "primaria": 762135,
+    "secundaria": 886290
+   }
+  },
+  {
+   "desde": "2026-10",
+   "fuente": "Comunicado 10/09/2026",
+   "lista": {
+    "inicial_js": 569800,
+    "inicial_jc": 790250,
+    "primaria": 892000,
+    "secundaria": 1037300
+   },
+   "pronto_pago": {
+    "inicial_js": 529914,
+    "inicial_jc": 734933,
+    "primaria": 829560,
+    "secundaria": 964689
+   }
+  }
+ ]
+}

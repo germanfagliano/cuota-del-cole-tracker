@@ -1,0 +1,167 @@
+:root {
+  color-scheme: light;
+  --plane: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+  --wash: rgba(11, 11, 11, 0.05);
+  --up: #a8321f;
+  --down: #006300;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #6250d6;
+  --series-8: #e34948;
+  --referencia: #6f6e69;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --plane: #0d0d0d;
+    --surface-1: #1a1a19;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --wash: rgba(255, 255, 255, 0.06);
+    --up: #f08a72;
+    --down: #0ca30c;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+    --series-8: #e66767;
+    --referencia: #a3a29b;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--plane);
+  color: var(--text-primary);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.viz-root { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
+a { color: inherit; }
+h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+h2 { font-size: 17px; margin: 0; }
+.bajada { margin: 0; color: var(--text-secondary); }
+.encabezado { margin-bottom: 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* Tiles */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.tile .etiqueta { color: var(--text-secondary); font-size: 13px; }
+.tile .valor { font-size: 26px; font-weight: 650; margin-top: 2px; }
+.tile .detalle { color: var(--text-muted); font-size: 12.5px; }
+
+/* Filtros */
+.filtros { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-bottom: 16px; align-items: flex-end; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+fieldset legend { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 4px; padding: 0; }
+.segmentado { display: flex; flex-wrap: wrap; }
+.segmentado legend { width: 100%; }
+.segmentado label { position: relative; }
+.segmentado input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.segmentado span {
+  display: block; padding: 6px 12px; font-size: 13.5px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-1); margin-left: -1px;
+}
+.segmentado label:first-of-type span { border-radius: 8px 0 0 8px; margin-left: 0; }
+.segmentado label:last-of-type span { border-radius: 0 8px 8px 0; }
+.segmentado label:hover span { background: var(--wash); }
+.segmentado input:checked + span { background: var(--text-primary); color: var(--surface-1); border-color: var(--text-primary); font-weight: 600; }
+.segmentado input:focus-visible + span { outline: 2px solid var(--series-1); outline-offset: 2px; position: relative; z-index: 1; }
+
+/* Tarjetas */
+.tarjeta { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+.tarjeta-cabeza { margin-bottom: 12px; }
+.ayuda { margin: 2px 0 0; color: var(--text-secondary); font-size: 13.5px; }
+.pie { margin: 8px 0 0; color: var(--text-muted); font-size: 12.5px; }
+details summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+details summary::-webkit-details-marker { display: none; }
+details summary::before { content: "▸"; color: var(--text-muted); transition: transform .15s; }
+details[open] summary::before { transform: rotate(90deg); }
+details[open] summary { margin-bottom: 12px; }
+
+/* Selector de series = leyenda */
+.series { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-bottom: 8px; }
+.serie { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px 4px 8px; border-radius: 999px; border: 1px solid var(--border); cursor: pointer; font-size: 13px; color: var(--text-secondary); user-select: none; }
+.serie:hover { background: var(--wash); }
+.serie input { position: absolute; opacity: 0; width: 0; height: 0; }
+.serie .clave { width: 16px; height: 2px; border-radius: 2px; background: var(--c); opacity: .35; }
+.serie:has(input:checked) { color: var(--text-primary); border-color: color-mix(in srgb, var(--c) 55%, transparent); }
+.serie:has(input:checked) .clave { opacity: 1; height: 3px; }
+.serie:has(input:focus-visible) { outline: 2px solid var(--series-1); outline-offset: 2px; }
+.serie .marca { width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid var(--axis); display: grid; place-items: center; font-size: 10px; line-height: 1; }
+.serie:has(input:checked) .marca { background: var(--text-primary); border-color: var(--text-primary); color: var(--surface-1); }
+.serie:has(input:checked) .marca::after { content: "✓"; font-weight: 800; }
+.separador { width: 100%; height: 0; }
+
+/* Gráfico */
+.grafico { position: relative; outline: none; }
+.grafico:focus-visible { box-shadow: 0 0 0 2px var(--series-1); border-radius: 6px; }
+.grafico svg { display: block; width: 100%; height: 420px; overflow: visible; }
+.grafico .grid line { stroke: var(--grid); stroke-width: 1; }
+.grafico .eje text { fill: var(--text-muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.grafico .base { stroke: var(--axis); }
+.grafico .linea { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.grafico .referencia { stroke: var(--referencia); stroke-dasharray: 5 4; }
+.grafico .etiqueta-fin { font-size: 12px; fill: var(--text-secondary); }
+.grafico .etiqueta-fin tspan.v { fill: var(--text-primary); font-weight: 600; }
+.grafico .cruz { stroke: var(--text-muted); stroke-width: 1; }
+.grafico .punto { stroke: var(--surface-1); stroke-width: 2; }
+.tooltip {
+  position: absolute; top: 0; pointer-events: none; min-width: 200px; max-width: 320px;
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.12); padding: 10px 12px; font-size: 12.5px; z-index: 2;
+}
+.tooltip .mes { color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
+.tooltip .fila { display: grid; grid-template-columns: 14px auto 1fr; gap: 8px; align-items: center; padding: 1px 0; }
+.tooltip .fila i { height: 2px; border-radius: 2px; background: var(--c); }
+.tooltip .fila i.ref { background: none; border-top: 2px dashed var(--c); height: 0; }
+.tooltip .fila b { font-variant-numeric: tabular-nums; }
+.tooltip .fila span { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tooltip .cambio { color: var(--text-muted); font-size: 11.5px; margin-top: 6px; }
+
+/* Tablas */
+.tabla-scroll { overflow-x: auto; }
+.tabla-scroll.alta { max-height: 520px; overflow-y: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--text-secondary); font-weight: 600; font-size: 12.5px; position: sticky; top: 0; background: var(--surface-1); }
+td .clave { display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--c); vertical-align: middle; margin-right: 8px; }
+.sube { color: var(--up); }
+.baja { color: var(--down); }
+.calc { color: var(--text-muted); }
+
+.historial { margin: 0; padding-left: 20px; }
+.historial li { margin-bottom: 8px; }
+.historial .fecha { font-weight: 600; }
+.historial .detalle { color: var(--text-secondary); }
+
+.notas ul { padding-left: 20px; margin: 10px 0 0; color: var(--text-secondary); }
+.notas li { margin-bottom: 6px; }
+.notas strong { color: var(--text-primary); }
+
+@media (max-width: 640px) {
+  .viz-root { padding: 20px 12px 48px; }
+  h1 { font-size: 23px; }
+  .grafico svg { height: 340px; }
+  .tarjeta { padding: 14px; }
+}

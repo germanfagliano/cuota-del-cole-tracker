@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cuota del Cole * Tracker</title>
+  <meta name="description" content="Cuota del colegio, comedor, inflación (IPC) y dólar blue, mes a mes.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="viz-root">
+    <header class="encabezado">
+      <h1>Cuota del Cole * Tracker</h1>
+      <p class="bajada">Cuánto aumentan la cuota y el comedor del colegio comparado con la inflación (IPC) y el dólar blue.</p>
+    </header>
+
+    <section class="tiles" id="tiles" aria-label="Indicadores"></section>
+
+    <section class="filtros" aria-label="Filtros">
+      <fieldset class="segmentado" id="f-rango">
+        <legend>Período</legend>
+        <label><input type="radio" name="rango" value="todo" checked><span>Todo</span></label>
+        <label><input type="radio" name="rango" value="2024-01"><span>Desde 2024</span></label>
+        <label><input type="radio" name="rango" value="2025-01"><span>Desde 2025</span></label>
+        <label><input type="radio" name="rango" value="2026-01"><span>Desde 2026</span></label>
+        <label><input type="radio" name="rango" value="12m"><span>Últimos 12 meses</span></label>
+      </fieldset>
+      <fieldset class="segmentado" id="f-precio">
+        <legend>Precio de la cuota</legend>
+        <label><input type="radio" name="precio" value="lista" checked><span>De lista</span></label>
+        <label><input type="radio" name="precio" value="pronto_pago"><span>Con pronto pago</span></label>
+      </fieldset>
+      <fieldset class="segmentado" id="f-vista">
+        <legend>Ver en</legend>
+        <label><input type="radio" name="vista" value="pesos" checked><span>Pesos</span></label>
+        <label><input type="radio" name="vista" value="real"><span>Pesos de hoy</span></label>
+        <label><input type="radio" name="vista" value="usd"><span>Dólar blue</span></label>
+        <label><input type="radio" name="vista" value="indice"><span>Comparado con IPC</span></label>
+      </fieldset>
+    </section>
+
+    <section class="tarjeta">
+      <div class="tarjeta-cabeza">
+        <h2 id="titulo-grafico">Valor mensual</h2>
+        <p class="ayuda" id="ayuda-vista"></p>
+      </div>
+      <fieldset class="series" id="series">
+        <legend class="sr-only">Qué mostrar</legend>
+      </fieldset>
+      <div class="grafico" id="grafico" tabindex="0" role="img" aria-describedby="ayuda-vista">
+        <svg id="svg"></svg>
+        <div class="tooltip" id="tooltip" hidden></div>
+      </div>
+      <p class="pie" id="pie-grafico"></p>
+    </section>
+
+    <section class="tarjeta">
+      <div class="tarjeta-cabeza">
+        <h2>Resumen del período</h2>
+        <p class="ayuda" id="ayuda-resumen"></p>
+      </div>
+      <div class="tabla-scroll"><table id="tabla-resumen"></table></div>
+    </section>
+
+    <section class="tarjeta">
+      <details>
+        <summary><h2>Tabla mes a mes</h2></summary>
+        <div class="tabla-scroll alta"><table id="tabla-mensual"></table></div>
+      </details>
+    </section>
+
+    <section class="tarjeta">
+      <div class="tarjeta-cabeza">
+        <h2>Reserva de vacante / reinscripción</h2>
+        <p class="ayuda">Se paga a mitad de año para asegurar el lugar del ciclo siguiente.</p>
+      </div>
+      <div class="tabla-scroll"><table id="tabla-reserva"></table></div>
+    </section>
+
+    <section class="tarjeta">
+      <details>
+        <summary><h2>Historial de comunicados</h2></summary>
+        <ol class="historial" id="historial"></ol>
+      </details>
+    </section>
+
+    <section class="tarjeta notas">
+      <h2>Cómo se calcula</h2>
+      <ul>
+        <li><strong>Cuotas y comedor:</strong> valores publicados en los comunicados del colegio a las familias. Cada valor rige desde el mes indicado hasta el siguiente aumento.</li>
+        <li><strong>Pronto pago:</strong> fue 10% de descuento hasta 2025 y bajó a 7% en 2026. El comedor no tiene pronto pago.</li>
+        <li><strong>Comedor calculado:</strong> cuando el comunicado solo informó un porcentaje (ago-2024 +6%, dic-2024 +9,5%, jun-2025 +13%), el valor se calcula sobre el anterior. En 2023 solo hubo porcentajes, por eso el comedor empieza en mar-2024.</li>
+        <li><strong>IPC:</strong> índice de precios al consumidor nacional del INDEC, vía <a href="https://argentinadatos.com">ArgentinaDatos</a> (respaldo: datos.gob.ar). Los meses que el INDEC todavía no publicó usan el último dato disponible.</li>
+        <li><strong>Dólar blue:</strong> promedio mensual del precio de venta (ArgentinaDatos); el valor de hoy viene de <a href="https://dolarapi.com">DolarApi</a>. Se actualiza solo todos los días.</li>
+        <li><strong>Pesos de hoy:</strong> cada valor se ajusta por la inflación acumulada hasta el último IPC publicado.</li>
+        <li>No incluye seguro escolar, talleres ni descuentos por hermano.</li>
+      </ul>
+      <p class="pie" id="actualizado"></p>
+    </section>
+  </main>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

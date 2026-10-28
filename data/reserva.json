@@ -1,0 +1,109 @@
+{
+ "ciclos": [
+  {
+   "ciclo": 2024,
+   "fuente": "Comunicado 02/06/2023",
+   "valores": {
+    "inicial_js": [
+     75430,
+     67887,
+     25143
+    ],
+    "inicial_jc": [
+     75430,
+     67887,
+     25143
+    ],
+    "primaria": [
+     117245,
+     105520,
+     39081
+    ],
+    "secundaria": [
+     137065,
+     123358,
+     45688
+    ]
+   },
+   "nota": "En 2023 el nivel inicial tenía un único valor de reinscripción."
+  },
+  {
+   "ciclo": 2025,
+   "fuente": "Comunicado 12/06/2024",
+   "valores": {
+    "inicial_js": [
+     244110,
+     219700,
+     81370
+    ],
+    "inicial_jc": [
+     339722,
+     305750,
+     113240
+    ],
+    "primaria": [
+     383750,
+     345375,
+     127917
+    ],
+    "secundaria": [
+     446700,
+     402030,
+     148900
+    ]
+   }
+  },
+  {
+   "ciclo": 2026,
+   "fuente": "Comunicado junio 2025",
+   "valores": {
+    "inicial_js": [
+     418900,
+     377010,
+     139634
+    ],
+    "inicial_jc": [
+     580700,
+     522630,
+     193567
+    ],
+    "primaria": [
+     655300,
+     589770,
+     218434
+    ],
+    "secundaria": [
+     761800,
+     685620,
+     253934
+    ]
+   }
+  },
+  {
+   "ciclo": 2027,
+   "fuente": "Contrato educativo 07/07/2026",
+   "valores": {
+    "inicial_js": [
+     523500,
+     486855,
+     174500
+    ],
+    "inicial_jc": [
+     726000,
+     675180,
+     242000
+    ],
+    "primaria": [
+     819500,
+     762135,
+     273165
+    ],
+    "secundaria": [
+     953000,
+     886290,
+     317665
+    ]
+   }
+  }
+ ]
+}
