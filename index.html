@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cuota del Cole * Tracker</title>
-  <meta name="description" content="Cuota del colegio, comedor, inflación (IPC) y dólar blue, mes a mes.">
+  <meta name="description" content="Cuota del colegio, comedor, inflación (IPC), dólar blue, RIPTE y sueldo docente bonaerense, mes a mes.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,7 +12,7 @@
   <main class="viz-root">
     <header class="encabezado">
       <h1>Cuota del Cole * Tracker</h1>
-      <p class="bajada">Cuánto aumentan la cuota y el comedor del colegio comparado con la inflación (IPC) y el dólar blue.</p>
+      <p class="bajada">Cuánto aumentan la cuota y el comedor del colegio comparado con la inflación (IPC), el dólar blue, los salarios (RIPTE) y el sueldo docente bonaerense.</p>
     </header>
 
     <section class="tiles" id="tiles" aria-label="Indicadores"></section>
@@ -52,6 +52,8 @@
         <legend>Comparar con</legend>
         <label class="serie"><input type="checkbox" name="ref" value="ipc"><span class="marca"></span><span class="clave-ref ipc"></span>Si hubiera seguido al IPC</label>
         <label class="serie"><input type="checkbox" name="ref" value="blue"><span class="marca"></span><span class="clave-ref blue"></span>Si hubiera seguido al dólar blue</label>
+        <label class="serie"><input type="checkbox" name="ref" value="ripte"><span class="marca"></span><span class="clave-ref ripte"></span>Si hubiera seguido al RIPTE</label>
+        <label class="serie"><input type="checkbox" name="ref" value="docente"><span class="marca"></span><span class="clave-ref docente"></span>Si hubiera seguido al sueldo docente PBA</label>
       </fieldset>
       <div class="grafico" id="grafico" tabindex="0" role="img" aria-describedby="ayuda-vista">
         <svg id="svg"></svg>
@@ -98,6 +100,8 @@
         <li><strong>Comedor calculado:</strong> cuando el comunicado solo informó un porcentaje (ago-2024 +6%, dic-2024 +9,5%, jun-2025 +13%), el valor se calcula sobre el anterior. En 2023 solo hubo porcentajes, por eso el comedor empieza en mar-2024.</li>
         <li><strong>IPC:</strong> índice de precios al consumidor nacional del INDEC, vía <a href="https://argentinadatos.com">ArgentinaDatos</a> (respaldo: datos.gob.ar). Los meses que el INDEC todavía no publicó usan el último dato disponible.</li>
         <li><strong>Dólar blue:</strong> promedio mensual del precio de venta (ArgentinaDatos); el valor de hoy viene de <a href="https://dolarapi.com">DolarApi</a>. Se actualiza solo todos los días.</li>
+        <li><strong>RIPTE:</strong> remuneración imponible promedio de los trabajadores estables, total país (Secretaría de Trabajo, vía <a href="https://datos.gob.ar">datos.gob.ar</a>). Mide cuánto aumentan los sueldos formales. Se actualiza solo; los meses sin publicar usan el último dato.</li>
+        <li><strong>Sueldo docente PBA:</strong> sueldo inicial de un maestro de grado de jornada simple sin antigüedad en la provincia de Buenos Aires, según la paritaria bonaerense. Es la referencia de los sueldos docentes del colegio. Los montos vienen de notas de prensa y, en los meses en que solo se informó un porcentaje, se calculan sobre el anterior. Se carga a mano en <code>data/paritaria.json</code>.</li>
         <li><strong>Comedor vs. cuota:</strong> comedor maternal y jardín contra la cuota de inicial jornada completa; comedor de primaria contra la cuota de primaria, con el tipo de precio elegido.</li>
         <li><strong>Pesos de hoy:</strong> cada valor se ajusta por la inflación acumulada hasta el último IPC publicado.</li>
         <li>No incluye seguro escolar, talleres ni descuentos por hermano.</li>

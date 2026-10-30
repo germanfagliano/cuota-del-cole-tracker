@@ -64,8 +64,8 @@ function sv(tag, attrs = {}) {
 const colorDe = (s) => `var(--series-${s.color})`;
 
 // ---------- datos ----------
-const [aranceles, comedor, reserva, indicadores] = await Promise.all(
-  ["aranceles", "comedor", "reserva", "indicadores"].map((n) => fetch(`data/${n}.json`).then((r) => r.json())),
+const [aranceles, comedor, reserva, indicadores, paritaria] = await Promise.all(
+  ["aranceles", "comedor", "reserva", "indicadores", "paritaria"].map((n) => fetch(`data/${n}.json`).then((r) => r.json())),
 );
 
 const nombres = Object.fromEntries([...aranceles.niveles, ...comedor.categorias].map((n) => [n.id, n.nombre]));
@@ -87,6 +87,13 @@ const ipcNivel = new Map();
 }
 const bluePorMes = new Map(indicadores.blue.map((d) => [d.mes, d.promedio_venta]));
 const blueDe = (m) => bluePorMes.get(m) ?? indicadores.blue_hoy.venta;
+// RIPTE: los meses sin publicar repiten el último dato.
+const riptePorMes = new Map(indicadores.ripte.map((d) => [d.mes, d.valor]));
+const RIPTE_HASTA = indicadores.ripte.at(-1).mes;
+const ripteDe = (m) => riptePorMes.get(m > RIPTE_HASTA ? RIPTE_HASTA : m);
+const docenteDe = (m) => vigenciaEn(paritaria.vigencias, m)?.valor ?? null;
+// Valor de cada referencia en un mes; las líneas de comparación usan el cociente entre dos meses.
+const INDICES = { ipc: (m) => ipcNivel.get(m), blue: blueDe, ripte: ripteDe, docente: docenteDe };
 
 function vigenciaEn(vigencias, mes) {
   let v = null;
@@ -109,12 +116,14 @@ const estado = {
   vista: "pesos",
   activas: new Set(SERIES.filter((s) => s.defecto).map((s) => s.id)),
   comedores: new Set(SERIES.filter((s) => s.defectoComedor).map((s) => s.id)), // series de la vista "Comedor vs. cuota"
-  refs: new Set(["ipc"]), // líneas de comparación en la vista en pesos: "ipc", "blue"
+  refs: new Set(["ipc"]), // líneas de comparación en la vista en pesos: "ipc", "blue", "ripte", "docente"
   cursor: null,
 };
 const REFS = {
   ipc: { clase: "ref-ipc", sufijo: "si siguiera al IPC" },
   blue: { clase: "ref-blue", sufijo: "si siguiera al blue" },
+  ripte: { clase: "ref-ripte", sufijo: "si siguiera al RIPTE" },
+  docente: { clase: "ref-docente", sufijo: "si siguiera al sueldo docente" },
 };
 const leerURL = () => {
   const p = new URLSearchParams(location.hash.slice(1));
@@ -167,16 +176,14 @@ function transformar(serie, mes) {
       return v;
   }
 }
-// Cuánto costaría la serie si desde su primer mes en el período hubiera seguido al IPC o al dólar blue.
+// Cuánto costaría la serie si desde su primer mes en el período hubiera seguido al IPC, al dólar blue, al RIPTE o al sueldo docente.
 function lineasReferencia(serie, meses) {
   const desde = meses.find((m) => valorNominal(serie, m, estado.precio) != null);
   if (!desde) return [];
   const v0 = valorNominal(serie, desde, estado.precio);
   return [...estado.refs].map((r) => ({
     r,
-    valores: meses.map((m) =>
-      m < desde ? null : r === "ipc" ? (v0 * ipcNivel.get(m)) / ipcNivel.get(desde) : (v0 / blueDe(desde)) * blueDe(m),
-    ),
+    valores: meses.map((m) => (m < desde ? null : (v0 * INDICES[r](m)) / INDICES[r](desde))),
   }));
 }
 
@@ -271,6 +278,8 @@ function renderGrafico() {
     const partes = [];
     if (estado.refs.has("ipc")) partes.push("la raya larga muestra cuánto costaría si hubiera aumentado igual que el IPC");
     if (estado.refs.has("blue")) partes.push("la línea de puntos, si hubiera mantenido su valor en dólares blue");
+    if (estado.refs.has("ripte")) partes.push("raya y punto, si hubiera aumentado igual que los salarios formales (RIPTE)");
+    if (estado.refs.has("docente")) partes.push("raya y dos puntos, si hubiera aumentado igual que el sueldo docente bonaerense");
     textoAyuda += ` Desde ${nombreMes(meses[0])} (o el primer mes con dato), ${partes.join("; ")}.`;
   }
   $("#ayuda-vista").textContent = textoAyuda;
@@ -445,6 +454,7 @@ function dibujarCursor() {
     for (const d of detalle) tip.append(el("div", { class: "cambio" }, d));
   }
   if (mes > IPC_HASTA && (estado.vista === "real" || (estado.vista === "pesos" && estado.refs.has("ipc")))) tip.append(el("div", { class: "cambio" }, "IPC de este mes todavía no publicado"));
+  if (mes > RIPTE_HASTA && estado.vista === "pesos" && estado.refs.has("ripte")) tip.append(el("div", { class: "cambio" }, "RIPTE de este mes todavía no publicado"));
 
   tip.hidden = false;
   const tw = tip.offsetWidth;
@@ -535,7 +545,7 @@ function renderTablaMensual() {
   const { inicio, activas } = periodo();
   const t = $("#tabla-mensual");
   t.replaceChildren();
-  t.append(el("thead", {}, el("tr", {}, el("th", {}, "Mes"), ...activas.map((s) => el("th", {}, s.corto)), el("th", {}, "IPC del mes"), el("th", {}, "Blue promedio"))));
+  t.append(el("thead", {}, el("tr", {}, el("th", {}, "Mes"), ...activas.map((s) => el("th", {}, s.corto)), el("th", {}, "IPC del mes"), el("th", {}, "Blue promedio"), el("th", {}, "RIPTE"), el("th", {}, "Sueldo docente PBA"))));
   const tb = el("tbody");
   for (const m of rangoMeses(inicio, FIN).reverse()) {
     const celdas = activas.map((s) => {
@@ -550,7 +560,7 @@ function renderTablaMensual() {
       return td;
     });
     tb.append(
-      el("tr", {}, el("td", {}, nombreMes(m)), ...celdas, el("td", {}, ipcVar.has(m) ? `${nf1.format(ipcVar.get(m))}%` : "–"), el("td", {}, pesos(blueDe(m)))),
+      el("tr", {}, el("td", {}, nombreMes(m)), ...celdas, el("td", {}, ipcVar.has(m) ? `${nf1.format(ipcVar.get(m))}%` : "–"), el("td", {}, pesos(blueDe(m))), el("td", {}, m <= RIPTE_HASTA ? pesos(ripteDe(m)) : "–"), el("td", {}, pesos(docenteDe(m)))),
     );
   }
   t.append(tb);
@@ -659,5 +669,5 @@ document.querySelectorAll("input[name=ref]").forEach((inp) => {
 renderHistorial();
 conectarInteraccion();
 render();
-$("#actualizado").textContent = `IPC y dólar actualizados el ${new Date(indicadores.actualizado).toLocaleString("es-AR")}.`;
+$("#actualizado").textContent = `IPC, dólar y RIPTE actualizados el ${new Date(indicadores.actualizado).toLocaleString("es-AR")}.`;
 new ResizeObserver(() => renderGrafico()).observe($("#grafico"));

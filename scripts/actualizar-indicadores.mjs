@@ -1,16 +1,18 @@
-// Descarga IPC mensual y dólar blue y los guarda en data/indicadores.json.
+// Descarga IPC mensual, dólar blue y RIPTE y los guarda en data/indicadores.json.
 // Fuente principal: api.argentinadatos.com. Respaldo para el IPC: API de series de datos.gob.ar (INDEC).
+// RIPTE: CSV de la serie mensual en datos.gob.ar (Secretaría de Trabajo).
 import { writeFile, readFile } from "node:fs/promises";
 
 const SALIDA = new URL("../data/indicadores.json", import.meta.url);
 const DESDE = "2023-01";
 const HEADERS = { "User-Agent": "cuota-del-cole-tracker (github.com/germanfagliano)" };
 
-async function getJSON(url) {
+async function get(url) {
   const res = await fetch(url, { headers: HEADERS });
   if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
-  return res.json();
+  return res;
 }
+const getJSON = (url) => get(url).then((r) => r.json());
 
 async function ipcArgentinaDatos() {
   const datos = await getJSON("https://api.argentinadatos.com/v1/finanzas/indices/inflacion");
@@ -46,6 +48,17 @@ async function blueMensual() {
   }));
 }
 
+async function ripteMensual() {
+  const url = "https://infra.datos.gob.ar/catalog/sspm/dataset/158/distribution/158.1/download/remuneracion-imponible-promedio-trabajadores-estables-ripte-total-pais-pesos-serie-mensual.csv";
+  const filas = (await get(url).then((r) => r.text())).trim().split(/\r?\n/).slice(1);
+  const out = filas
+    .map((f) => f.split(","))
+    .map(([fecha, valor]) => ({ mes: fecha.slice(0, 7), valor: Math.round(+valor) }))
+    .filter((d) => d.mes >= DESDE && d.valor > 0);
+  if (!out.length) throw new Error("CSV de RIPTE vacío");
+  return out;
+}
+
 async function blueHoy() {
   const d = await getJSON("https://dolarapi.com/v1/dolares/blue");
   return { fecha: d.fechaActualizacion, compra: d.compra, venta: d.venta };
@@ -67,18 +80,20 @@ const anterior = await readFile(SALIDA, "utf8").then(JSON.parse).catch(() => ({}
 const ipc = await intentar("IPC", ipcArgentinaDatos, ipcDatosGobAr);
 const blue = await intentar("Blue", blueMensual);
 const hoy = await intentar("Blue hoy", blueHoy);
+const ripte = await intentar("RIPTE", ripteMensual);
 
 const salida = {
   actualizado: new Date().toISOString(),
   ipc: ipc ?? anterior.ipc,
   blue: blue ?? anterior.blue,
   blue_hoy: hoy ?? (blue ? { fecha: blue.at(-1).mes, venta: blue.at(-1).cierre_venta } : anterior.blue_hoy),
+  ripte: ripte ?? anterior.ripte,
 };
 
-if (!salida.ipc || !salida.blue) {
+if (!salida.ipc || !salida.blue || !salida.ripte) {
   console.error("No se pudieron obtener los indicadores y no hay datos previos.");
   process.exit(1);
 }
 
 await writeFile(SALIDA, JSON.stringify(salida, null, 1) + "\n");
-console.log(`IPC hasta ${salida.ipc.at(-1).mes}, blue hasta ${salida.blue.at(-1).mes}, blue hoy $${salida.blue_hoy.venta}`);
+console.log(`IPC hasta ${salida.ipc.at(-1).mes}, blue hasta ${salida.blue.at(-1).mes}, blue hoy $${salida.blue_hoy.venta}, RIPTE hasta ${salida.ripte.at(-1).mes}`);

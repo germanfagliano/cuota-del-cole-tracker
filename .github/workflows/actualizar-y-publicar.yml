@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Bajar IPC y dólar blue
+      - name: Bajar IPC, dólar blue y RIPTE
         run: node scripts/actualizar-indicadores.mjs
 
       - name: Guardar datos nuevos en el repo
@@ -40,7 +40,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Sin cambios"
           else
-            git commit -m "Actualizar IPC y dólar blue"
+            git commit -m "Actualizar IPC, dólar blue y RIPTE"
             git push
           fi
 

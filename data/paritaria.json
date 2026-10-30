@@ -1,0 +1,153 @@
+{
+ "cargo": "Maestro de grado, jornada simple, sin antigüedad (provincia de Buenos Aires)",
+ "vigencias": [
+  {
+   "desde": "2023-09",
+   "fuente": "0221, 06/09/2023 (+15% acordado y +10% nuevo)",
+   "valor": 230000
+  },
+  {
+   "desde": "2023-11",
+   "fuente": "0223, 14/11/2023 (+22 puntos sobre febrero 2023)",
+   "valor": 265000
+  },
+  {
+   "desde": "2024-01",
+   "fuente": "Acuerdo enero 2024 (+25%)",
+   "valor": 331250,
+   "calculado": true
+  },
+  {
+   "desde": "2024-02",
+   "fuente": "DIB, marzo 2024",
+   "valor": 355000
+  },
+  {
+   "desde": "2024-03",
+   "fuente": "DIB, marzo 2024 (+13,5%)",
+   "valor": 394000
+  },
+  {
+   "desde": "2024-04",
+   "fuente": "Acuerdo abril 2024 (+9,5%)",
+   "valor": 431430,
+   "calculado": true
+  },
+  {
+   "desde": "2024-05",
+   "fuente": "Acuerdo mayo 2024 (+7,5%)",
+   "valor": 463787,
+   "calculado": true
+  },
+  {
+   "desde": "2024-07",
+   "fuente": "Acuerdo julio 2024; valor despejado del de agosto (+4,5%)",
+   "valor": 478512,
+   "calculado": true
+  },
+  {
+   "desde": "2024-08",
+   "fuente": "El Cronista, agosto 2024",
+   "valor": 500045
+  },
+  {
+   "desde": "2024-09",
+   "fuente": "Acuerdo agosto 2024 (+8,5% sobre julio)",
+   "valor": 519186,
+   "calculado": true
+  },
+  {
+   "desde": "2024-10",
+   "fuente": "Infobae, 21/10/2024",
+   "valor": 531749
+  },
+  {
+   "desde": "2024-11",
+   "fuente": "Infobae, 21/10/2024",
+   "valor": 553076
+  },
+  {
+   "desde": "2025-02",
+   "fuente": "Ámbito, febrero 2025 (+7% sobre enero)",
+   "valor": 591762
+  },
+  {
+   "desde": "2025-03",
+   "fuente": "Acuerdo febrero 2025 (+9% sobre enero)",
+   "valor": 602853,
+   "calculado": true
+  },
+  {
+   "desde": "2025-05",
+   "fuente": "Acuerdo mayo 2025 (+6% sobre marzo)",
+   "valor": 639024,
+   "calculado": true
+  },
+  {
+   "desde": "2025-07",
+   "fuente": "Acuerdo mayo 2025 (+10% sobre marzo)",
+   "valor": 663138,
+   "calculado": true
+  },
+  {
+   "desde": "2025-08",
+   "fuente": "Acuerdo agosto 2025 (+2,5% sobre julio)",
+   "valor": 679716,
+   "calculado": true
+  },
+  {
+   "desde": "2025-10",
+   "fuente": "Acuerdo agosto 2025 (+5% sobre julio)",
+   "valor": 696295,
+   "calculado": true
+  },
+  {
+   "desde": "2025-12",
+   "fuente": "Acuerdo 2026 (+1,5% retroactivo a diciembre)",
+   "valor": 706739,
+   "calculado": true
+  },
+  {
+   "desde": "2026-02",
+   "fuente": "Acuerdo marzo 2026 (+1,5% sobre enero)",
+   "valor": 717340,
+   "calculado": true
+  },
+  {
+   "desde": "2026-03",
+   "fuente": "Acuerdo marzo 2026 (+6,5% sobre enero)",
+   "valor": 752677,
+   "calculado": true
+  },
+  {
+   "desde": "2026-04",
+   "fuente": "Acuerdo marzo 2026 (+9% sobre enero)",
+   "valor": 770346,
+   "calculado": true
+  },
+  {
+   "desde": "2026-07",
+   "fuente": "Acuerdo julio 2026 (+5% sobre junio)",
+   "valor": 808863,
+   "calculado": true
+  },
+  {
+   "desde": "2026-08",
+   "fuente": "Acuerdo julio 2026 (+7% sobre junio)",
+   "valor": 824270,
+   "calculado": true
+  },
+  {
+   "desde": "2026-10",
+   "fuente": "Acuerdo 17/10/2026 (+3% sobre septiembre)",
+   "valor": 848998,
+   "calculado": true
+  },
+  {
+   "desde": "2026-11",
+   "fuente": "Acuerdo 17/10/2026 (+6% sobre septiembre)",
+   "valor": 873726,
+   "calculado": true
+  }
+ ]
+}
