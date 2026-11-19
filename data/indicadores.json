@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-18T21:07:01.748Z",
+ "actualizado": "2026-11-19T21:11:58.285Z",
  "ipc": [
   {
    "mes": "2023-01",
@@ -419,14 +419,14 @@
   },
   {
    "mes": "2026-11",
-   "promedio_venta": 1568,
-   "cierre_venta": 1605
+   "promedio_venta": 1571,
+   "cierre_venta": 1630
   }
  ],
  "blue_hoy": {
-  "fecha": "2026-11-18T20:56:00.000Z",
-  "compra": 1610,
-  "venta": 1630
+  "fecha": "2026-11-19T20:59:00.000Z",
+  "compra": 1620,
+  "venta": 1640
  },
  "ripte": [
   {
