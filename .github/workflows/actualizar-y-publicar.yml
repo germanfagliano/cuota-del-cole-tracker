@@ -7,27 +7,22 @@ on:
     - cron: "0 13 * * *" # todos los días, 10:00 hora Argentina
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  publicar:
+  # Baja los indicadores, los guarda en el repo y arma el artefacto de la página.
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Bajar IPC, dólar blue y RIPTE
         run: node scripts/actualizar-indicadores.mjs
@@ -41,14 +36,29 @@ jobs:
             echo "Sin cambios"
           else
             git commit -m "Actualizar IPC, dólar blue y RIPTE"
+            # por si alguien subió un cambio a main mientras corría el job
+            git pull --rebase origin main
             git push
           fi
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .
 
+  # Job aparte (patrón oficial de GitHub Pages): el artefacto ya está registrado cuando
+  # arranca el deploy. En un mismo job, deploy-pages a veces no lo encontraba
+  # ("No artifacts named github-pages were found") y la corrida fallaba.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

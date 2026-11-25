@@ -10,11 +10,11 @@
   },
   {
    "id": "comedor_primer_ciclo",
-   "nombre": "Comedor · 1° a 3° (desde 2026, 1° a 4°)"
+   "nombre": "Comedor · 1° a 3° (en 2026, 1° a 4°)"
   },
   {
    "id": "comedor_segundo_ciclo",
-   "nombre": "Comedor · 4° a 6° y secundaria (desde 2026, 5° y 6°)"
+   "nombre": "Comedor · 4° a 6° y secundaria (en 2026, 5° y 6°)"
   }
  ],
  "vigencias": [
@@ -111,6 +111,25 @@
     "comedor_primer_ciclo": 385000,
     "comedor_segundo_ciclo": 401000
    }
+  },
+  {
+   "desde": "2027-02",
+   "fuente": "Comunicado 25/11/2026 (valores diarios)",
+   "diario": {
+    "comedor_maternal": 14835,
+    "comedor_infantes": 19065,
+    "comedor_primer_ciclo": 22310,
+    "comedor_segundo_ciclo": 23240
+   },
+   "dias_habiles": 20,
+   "valores": {
+    "comedor_maternal": 296700,
+    "comedor_infantes": 381300,
+    "comedor_primer_ciclo": 446200,
+    "comedor_segundo_ciclo": 464800
+   },
+   "calculado": true,
+   "nota": "Desde 2027 el comedor se cobra por día hábil: maternal $14.835, inicial $19.065, 1° a 3° $22.310, 4° a 6° y secundaria $23.240 por día. El valor mensual se estima con 20 días hábiles. Vianda hogareña (4° a 6° y secundaria): $7.535 por día. Vuelven a separarse maternal e inicial, y el primer tramo de primaria vuelve a ser 1° a 3°."
   }
  ]
 }

@@ -552,7 +552,7 @@ function renderTablaMensual() {
       const v = valorNominal(s, m, estado.precio);
       const antes = valorNominal(s, sumarMes(m, -1), estado.precio);
       const calculado = s.tipo === "comedor" && vigenciaEn(comedor.vigencias, m)?.calculado;
-      const td = el("td", calculado ? { title: "Calculado a partir del % informado" } : {}, pesos(v), calculado ? el("span", { class: "calc" }, "*") : null);
+      const td = el("td", calculado ? { title: "Valor calculado: ver la nota en el historial de aumentos" } : {}, pesos(v), calculado ? el("span", { class: "calc" }, "*") : null);
       if (v && antes && v !== antes) {
         td.style.fontWeight = "650";
         td.append(el("span", { class: "calc" }, ` ${pct(v / antes - 1)}`));

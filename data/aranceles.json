@@ -322,6 +322,39 @@
     "primaria": 829560,
     "secundaria": 964689
    }
+  },
+  {
+   "desde": "2027-01",
+   "fuente": "Comunicado 25/11/2026",
+   "lista": {
+    "inicial_js": 618000,
+    "inicial_jc": 857000,
+    "primaria": 967000,
+    "secundaria": 1125000
+   },
+   "pronto_pago": {
+    "inicial_js": 574740,
+    "inicial_jc": 797010,
+    "primaria": 899310,
+    "secundaria": 1045320
+   },
+   "nota": "Secundaria con pronto pago figura en el comunicado como $1.045.320; con el 7% de descuento que se aplica al resto daría $1.046.250."
+  },
+  {
+   "desde": "2027-03",
+   "fuente": "Comunicado 25/11/2026",
+   "lista": {
+    "inicial_js": 656000,
+    "inicial_jc": 910000,
+    "primaria": 1027000,
+    "secundaria": 1195000
+   },
+   "pronto_pago": {
+    "inicial_js": 610080,
+    "inicial_jc": 846300,
+    "primaria": 955110,
+    "secundaria": 1111350
+   }
   }
  ]
 }
