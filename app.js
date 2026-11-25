@@ -210,10 +210,11 @@ function renderTiles() {
   const prim = SERIES[0];
   const hoy = valorNominal(prim, FIN, estado.precio);
   const hace12 = valorNominal(prim, sumarMes(FIN, -12), estado.precio);
+  const varUsd = hoy / blueDe(FIN) / (hace12 / blueDe(sumarMes(FIN, -12))) - 1;
   tile(
     `Cuota primaria ${estado.precio === "lista" ? "de lista" : "con pronto pago"}`,
     pesos(hoy),
-    `${usd(hoy / blueDe(FIN))} blue · ${pct(hoy / hace12 - 1)} en 12 meses`,
+    `${usd(hoy / blueDe(FIN))} blue · en 12 meses: ${pct(hoy / hace12 - 1)} en pesos, ${pct(varUsd)} en dólares`,
   );
 }
 
